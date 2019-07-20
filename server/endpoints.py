@@ -7,7 +7,7 @@ CORS(app)
 
 @app.route("/")
 def index():
-    return "Flask!!"
+    return "Yes!!"
 
 
 app.run(debug=True)
