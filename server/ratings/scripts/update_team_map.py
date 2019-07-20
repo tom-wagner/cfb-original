@@ -1,5 +1,5 @@
 import csv
-from typing import Dict, List
+from typing import Dict
 from server.constants.constants import CFD, SP_PLUS, FPI, ENTROPY, MASSEY
 
 RATINGS_ORDER_IN_CSV = [CFD, SP_PLUS, FPI, ENTROPY, MASSEY]
