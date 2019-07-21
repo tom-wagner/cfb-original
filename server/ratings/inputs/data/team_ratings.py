@@ -1,3 +1,5 @@
+# NOTE --> AVERAGING TOGETHER IS SAME AS CALCULATING ONE BY ONE --> SEE LOGIC AT END OF FILE
+
 TEAM_RATINGS = {'Air Force': {'SP_PLUS': -3.5, 'FPI': -1.5, 'ENTROPY': 46.77, 'MASSEY': 53.76},
                 'Akron': {'SP_PLUS': -19.9, 'FPI': -16.5, 'ENTROPY': 26.72, 'MASSEY': 41.29},
                 'Alabama': {'SP_PLUS': 35.4, 'FPI': 27.9, 'ENTROPY': 81.27, 'MASSEY': 87.66},
@@ -128,3 +130,17 @@ TEAM_RATINGS = {'Air Force': {'SP_PLUS': -3.5, 'FPI': -1.5, 'ENTROPY': 46.77, 'M
                 'Wyoming': {'SP_PLUS': -4.7, 'FPI': -7.4, 'ENTROPY': 41.17, 'MASSEY': 53.49},
                 'New Mexico State': {'SP_PLUS': -17.9, 'FPI': -17.8, 'ENTROPY': 27.03, 'MASSEY': 37.44},
                 'Liberty': {'SP_PLUS': -13.8, 'FPI': -13.1, 'ENTROPY': 35.7, 'MASSEY': 41.13}}
+
+# LOGIC FOR AVERAGING VS CALCULATING ONE BY ONE
+# mn = TEAM_RATINGS['Minnesota']
+# wi = TEAM_RATINGS['Wisconsin']
+#
+# mn_average, wi_average = (sum(d.values()) / len(d.values()) for d in (mn, wi))
+#
+# print(mn_average, wi_average)
+#
+# print(mn, wi)
+# mn_diff = [x - y for x, y in list(zip(mn.values(), wi.values()))]
+#
+# print(sum(mn_diff) / 4)
+# print(mn_average - wi_average)
