@@ -11,7 +11,7 @@ const App: React.FC = () => {
   useEffect(() => {
     axios
       // TODO move all API logic to an \`api` file
-      .get(`${BASE_API_URL}/schedule`, { 'params': { 'year': 2019 }})
+      .get(`${BASE_API_URL}/conferences`, { 'params': { 'year': 2019 }})
       .then((data: AxiosResponse) => {
         console.log({ data });
         setApiStatus(data)
