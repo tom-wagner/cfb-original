@@ -1,4 +1,4 @@
-team_map = {
+TEAM_MAP = {
     'COLLEGE_FOOTBALL_DATA': {
         'Air Force': {'COLLEGE_FOOTBALL_DATA': 'Air Force', 'SP_PLUS': 'Air Force', 'FPI': 'Air Force',
                                   'ENTROPY': 'Air Force', 'FIVE_DIMES': 'Air Force', 'MASSEY': 'Air Force'},

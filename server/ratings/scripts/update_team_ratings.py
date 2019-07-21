@@ -2,7 +2,7 @@ import csv
 from typing import Dict
 
 from server.constants.constants import CFD, SP_PLUS, FPI, ENTROPY, MASSEY
-from server.constants.team_map import team_map
+from server.constants.team_map import TEAM_MAP
 
 RATINGS_ORDER_IN_CSV = [CFD, SP_PLUS, FPI, ENTROPY, MASSEY]
 
@@ -34,10 +34,10 @@ def read_csvs(files_to_read: Dict):
     return a dictionary containing the team ratings for each rating system
     standardized with a key from the College Football Data API
     """
-    res = {team: {} for team in team_map[CFD]}
+    res = {team: {} for team in TEAM_MAP[CFD]}
     for k, v in files_to_read.items():
         rating_system, file_data = get_csv_data_for_path(v)
-        team_name_map_for_rating_system = team_map[rating_system]
+        team_name_map_for_rating_system = TEAM_MAP[rating_system]
         for row in file_data:
             team, rtg = row[:2]
             standardized_team_name = team_name_map_for_rating_system[team][CFD]
