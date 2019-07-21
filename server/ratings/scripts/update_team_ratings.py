@@ -25,14 +25,19 @@ RATINGS_ORDER_IN_CSV = [CFD, SP_PLUS, FPI, ENTROPY, MASSEY]
 def get_csv_data_for_path(file_path: str) -> any:
     with open(file_path, encoding='utf-8-sig') as file:
         csv_reader = csv.reader(file, delimiter=',')
-        return [row for row in csv_reader]
+        rating_system = next(csv_reader)[1]
+        return rating_system, [row for row in csv_reader]
 
 
 def read_csvs(files_to_read: Dict):
     res = {team: {} for team in team_map}
     for k, v in files_to_read.items():
-        file_data = get_csv_data_for_path(v)
-        print(file_data)
+        rating_system, file_data = get_csv_data_for_path(v)
+        print(rating_system)
+        print(team_map[rating_system])
+        for row in file_data:
+            pass
+            # print(row)
 
 
 BASE_PATH = "../inputs/data"
