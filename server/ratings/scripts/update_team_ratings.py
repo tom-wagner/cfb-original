@@ -30,14 +30,20 @@ def get_csv_data_for_path(file_path: str) -> any:
 
 
 def read_csvs(files_to_read: Dict):
-    res = {team: {} for team in team_map}
+    """
+    return a dictionary containing the team ratings for each rating system
+    standardized with a key from the College Football Data API
+    """
+    res = {team: {} for team in team_map[CFD]}
     for k, v in files_to_read.items():
         rating_system, file_data = get_csv_data_for_path(v)
-        print(rating_system)
-        print(team_map[rating_system])
+        team_name_map_for_rating_system = team_map[rating_system]
         for row in file_data:
-            pass
-            # print(row)
+            team, rtg = row[:2]
+            standardized_team_name = team_name_map_for_rating_system[team][CFD]
+            res[standardized_team_name].update({rating_system: float(rtg)})
+
+    return res
 
 
 BASE_PATH = "../inputs/data"
@@ -46,4 +52,6 @@ file_paths_dict = dict(SP_PLUS=f'{BASE_PATH}/{SP_PLUS}.csv',
                        ENTROPY=f'{BASE_PATH}/{ENTROPY}.csv',
                        MASSEY=f'{BASE_PATH}/{MASSEY}.csv')
 
-read_csvs(file_paths_dict)
+# for now ==> copy to team_ratings and use formatter
+result = read_csvs(file_paths_dict)
+print(result)

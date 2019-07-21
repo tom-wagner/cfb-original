@@ -1,5 +1,5 @@
 team_map = {
-    'API': {
+    'COLLEGE_FOOTBALL_DATA': {
         'Air Force': {'COLLEGE_FOOTBALL_DATA': 'Air Force', 'SP_PLUS': 'Air Force', 'FPI': 'Air Force',
                                   'ENTROPY': 'Air Force', 'FIVE_DIMES': 'Air Force', 'MASSEY': 'Air Force'},
         'Akron': {'COLLEGE_FOOTBALL_DATA': 'Akron', 'SP_PLUS': 'Akron', 'FPI': 'Akron', 'ENTROPY': 'Akron',
