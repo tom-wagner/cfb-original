@@ -1,4 +1,3 @@
-import requests
 from flask import Flask, json, request
 from flask_cors import CORS
 
@@ -9,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/teams", method=['GET'])
+@app.route("/teams", methods=['GET'])
 def index():
     return json.jsonify(TEAM_RATINGS)
 
