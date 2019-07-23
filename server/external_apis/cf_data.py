@@ -11,3 +11,6 @@ class CFData:
         resp = requests.get(f'{self.base_path}/{route}', params=params)
         return resp
 
+    def get_schedule(self, year: int):
+        return self.get("games", year=year).json()
+

@@ -31,8 +31,8 @@ def teams():
 @app.route("/schedule", methods=['GET'])
 def schedule():
     try:
-        res = CFData().get("games", year=request.args.get('year'))
-        return json.jsonify(res.json())
+        res = CFData().get_schedule(year=request.args.get('year'))
+        return json.jsonify(res)
     except Exception as e:
         return dict(error="Error fetching schedule", detail=e)
 
