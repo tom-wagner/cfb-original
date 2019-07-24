@@ -16,7 +16,7 @@ const App: React.FC = () => {
   useEffect(() => {
     axios
       // TODO move all API logic to an \`api` file
-      .get(`${BASE_API_URL}/team_ratings`) // , { 'params': { 'year': 2019 }})
+      .get(`${BASE_API_URL}/simulate`) // , { 'params': { 'year': 2019 }})
       .then((data: AxiosResponse) => {
         setApiStatus({ pageStatus: 'hasData', teamRatings: data.data })
       })

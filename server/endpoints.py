@@ -4,6 +4,7 @@ from flask_cors import CORS
 from server.constants.conferences import CONFERENCES
 from server.external_apis.cf_data import CFData
 from server.ratings.inputs.data.team_ratings import TEAM_RATINGS
+from server.simulate.simulate_regular_season import SimulateRegularSeason
 
 app = Flask(__name__)
 CORS(app)
@@ -40,6 +41,13 @@ def schedule():
 @app.route("/conferences", methods=['GET'])
 def conferences():
     return json.jsonify(CONFERENCES)
+
+
+@app.route("/simulate", methods=["GET"])
+def simulate():
+    s = SimulateRegularSeason(2019)
+    s.run(10000)
+    return json.jsonify(s.simulation_results)
 
 
 app.run(debug=True)
