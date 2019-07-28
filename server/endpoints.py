@@ -45,8 +45,9 @@ def conferences():
 
 @app.route("/simulate", methods=["GET"])
 def simulate():
-    s = SimulateRegularSeason(2019)
-    s.run(10000)
+    year, conference = (request.args.get(arg) for arg in ('year', 'conference'))
+    s = SimulateRegularSeason(year=year, conference=conference)
+    s.run(100)
     return json.jsonify(s.simulation_results)
 
 
