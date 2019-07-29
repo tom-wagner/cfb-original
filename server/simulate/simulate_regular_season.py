@@ -1,7 +1,7 @@
 from typing import Dict, List
 from statistics import mean
 from collections import Counter, defaultdict
-from random import random as rand_float
+from random import random as rand_float, randint
 
 from server.constants.conferences import CONFERENCES
 from server.constants.likelihoods import LIKELIHOODS
@@ -87,23 +87,18 @@ def get_division_winners(divisions: Dict, conf_wins: Counter, simulated_season: 
 
         max_wins = max(div_results_dict.keys())
         first_place_teams = div_results_dict[max_wins]
-
-        if len(first_place_teams) == 1:
+        first_place_teams_ct = len(first_place_teams)
+        div_winner = None
+        if first_place_teams_ct == 1:
             div_winner = first_place_teams.pop()
-            res.append(div_winner)
-        elif len(first_place_teams) == 2:
+        elif first_place_teams_ct == 2:
             team_one, team_two = first_place_teams
             div_winner = break_two_way_tie(team_one, team_two, simulated_season)
-            res.append(div_winner)
-        elif len(first_place_teams) == 3:
-            pass
-            # print('3 WAY TIE', div_results_dict)
-        elif len(first_place_teams) == 4:
-            pass
-            # print('4 WAY TIE', div_results_dict)
-        else:
-            pass
-            # print('5+ way tie', div_results_dict)
+        elif first_place_teams_ct >= 3:
+            rand_idx = randint(0, first_place_teams_ct - 1)
+            div_winner = first_place_teams[rand_idx]
+        res.append(div_winner)
+    return res
 
 
 class SimulateRegularSeason:
@@ -131,7 +126,7 @@ class SimulateRegularSeason:
         for conf, conf_detail in CONFERENCES.items():
             divisions = conf_detail.get('divisions')
             if divisions:
-                get_division_winners(divisions, conf_wins, simulated_season)
+                res = get_division_winners(divisions, conf_wins, simulated_season)
             else:
                 pass
 
@@ -151,7 +146,7 @@ class SimulateRegularSeason:
                     if self.simulation_results.get(k):
                         self.simulation_results[k][season_segment][v] += 1
 
-            # self.determine_standings_and_update_simulation_results(conf_wins, simulated_season)
+            self.determine_standings_and_update_simulation_results(conf_wins, simulated_season)
 
 
 # s = SimulateRegularSeason(year=2019, conference='B1G')
