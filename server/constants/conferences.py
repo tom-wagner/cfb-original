@@ -19,7 +19,7 @@
 #
 # print(CONFS)
 
-CONFERENCES = {
+DETAILED_CONFERENCES = {
     'ACC': {
         'teams': [
             'Boston College',
@@ -587,3 +587,10 @@ CONFERENCES = {
         'short_name': 'Border Intercollegiate Athletic Association'
     }
 }
+
+# TODO -- HOW TO DO THIS??
+
+MAJOR_CONFERENCES = {'ACC', 'Big 12', 'Big Ten', 'SEC', 'Pac-12', 'Conference USA', 'Mid-American', 'Mountain West',
+                     'Sun Belt', 'American Athletic'}
+
+CONFERENCES = {k: v for k, v in DETAILED_CONFERENCES.items() if k in MAJOR_CONFERENCES}
