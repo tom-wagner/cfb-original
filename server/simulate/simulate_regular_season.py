@@ -77,6 +77,7 @@ def break_two_way_tie(team_one: str, team_two: str, simulated_season: List):
 
 
 def get_division_winners(divisions: Dict, conf_wins: Counter, simulated_season: List):
+    # TODO: Refactor to only loop through conf_wins and simulated_season once
     res = []
     for div_name, division_teams in divisions.items():
         div_results_dict = defaultdict(list)
