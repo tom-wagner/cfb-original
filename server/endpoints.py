@@ -47,8 +47,8 @@ def conferences():
 def simulate():
     year, conference = (request.args.get(arg) for arg in ('year', 'conference'))
     s = SimulateRegularSeason(year=year, conference=conference)
-    s.run(10000)
-    return json.jsonify(s.simulation_results)
+    simulation_results = s.run(10000)
+    return json.jsonify(simulation_results)
 
 
 app.run(debug=True)

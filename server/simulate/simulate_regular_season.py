@@ -145,8 +145,10 @@ class SimulateRegularSeason:
                 for k, v in results.items():
                     if self.simulation_results.get(k):
                         self.simulation_results[k][season_segment][v] += 1
+            # self.determine_standings_and_update_simulation_results(conf_wins, simulated_season)
 
-            self.determine_standings_and_update_simulation_results(conf_wins, simulated_season)
+        return self.simulation_results
+
 
 
 # s = SimulateRegularSeason(year=2019, conference='B1G')

@@ -1,112 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import 'semantic-ui-css/semantic.min.css'
-import axios, { AxiosResponse } from 'axios';
-import { Table } from 'semantic-ui-react'
-import { BASE_API_URL } from './constants/constants';
-import _ from 'lodash';
-import { Button } from 'semantic-ui-react';
-// TODO: Figure out how to use path properly
-// import path from 'path';
+import { createBrowserHistory } from 'history';
+import { Grid } from 'semantic-ui-react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import NavBar from './modules/Nav/NavBar';
+import TeamRatingsTable from './modules/TeamRatings/TeamRatingsTable';
+import SimulationTable from './modules/SimulationTable/SimluationTable';
 
-const [ENTROPY, FPI, MASSEY, SP_PLUS, AVERAGE] = ['ENTROPY', 'FPI', 'MASSEY', 'SP_PLUS', 'AVERAGE'];
+const history = createBrowserHistory();
+history.listen((location, action) => {
+  // location is an object like window.location
+  console.log(action, location.pathname, location.state);
+});
 
-type State = { pageStatus: string, teamRatings: {} | null }
-type TableState = { column: string | null , data: [], direction: string | null };
-const App: React.FC = () => {
-  const [{ pageStatus, teamRatings }, setApiStatus] = useState<State>({ pageStatus: "Loading...", teamRatings: null });
-
-  useEffect(() => {
-    axios
-      // TODO move all API logic to an \`api` file
-      .get(`${BASE_API_URL}/simulate`, { 'params': { 'year': 2019 }})
-      .then((data: AxiosResponse) => {
-        console.log(data);
-        setApiStatus({ pageStatus: 'hasData', teamRatings: data.data })
-      })
-      .catch(() => setApiStatus({ pageStatus: 'error', teamRatings: null }))
-  }, [])
-
-  let pageContent;
-
-  if (pageStatus === "Loading...") {
-    pageContent = <Button>Click me</Button>
-  }
-
-  if (pageStatus === "error") {
-    pageContent = <p>Error!!</p>
-  }
-
-  if (pageStatus === "hasData") {
-    const teamArr = _.map(
-      teamRatings,
-      (ratings: {}, team) => ({ 'team': team, [AVERAGE]: _.round(_.sum(_.map(ratings, r => r)) / 4, 2), ...ratings }),
-    );
-
-    pageContent = (
-      <Table sortable celled fixed>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell
-                // sorted={column === 'TeamName' ? direction : null}
-                // onClick={this.handleSort('name')}
-              >
-                Team Name
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                // sorted={column === ENTROPY ? direction : null}
-                // onClick={this.handleSort('age')}
-              >
-                Entropy
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                // sorted={column === FPI ? direction : null}
-                // onClick={this.handleSort('gender')}
-              >
-                FPI
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                // sorted={column === MASSEY ? direction : null}
-                // onClick={this.handleSort('gender')}
-              >
-                MASSEY
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                // sorted={column === SP_PLUS ? direction : null}
-                // onClick={this.handleSort('gender')}
-              >
-                SP+
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                // sorted={column === AVERAGE ? direction : null}
-                // onClick={this.handleSort('gender')}
-              >
-                Average Rating
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {_.map(teamArr, (obj) => (
-              <Table.Row key={obj.team}>
-                <Table.Cell>{obj.team}</Table.Cell>
-                <Table.Cell>{_.get(obj, ENTROPY)}</Table.Cell>
-                <Table.Cell>{_.get(obj, FPI)}</Table.Cell>
-                <Table.Cell>{_.get(obj, SP_PLUS)}</Table.Cell>
-                <Table.Cell>{_.get(obj, MASSEY)}</Table.Cell>
-                <Table.Cell>{_.get(obj, AVERAGE)}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
-    );
-  }
-
-  return (
-    <div>
-      <header>
-        {pageContent}
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => (
+  <Router>
+    <Route component={NavBar} />
+    <Grid style={{ padding: '20px 50px' }}>
+      <Route exact path="/home" component={() => <p>Home Page TBD</p>}/>
+      <Route path="/team-ratings" component={TeamRatingsTable}/>
+      <Route path="/simulate" component={SimulationTable}/>
+    </Grid>
+  </Router>
+);
 
 export default App;
