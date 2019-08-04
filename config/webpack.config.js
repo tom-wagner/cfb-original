@@ -1,5 +1,6 @@
 'use strict';
 
+
 const fs = require('fs');
 const isWsl = require('is-wsl');
 const path = require('path');
@@ -272,6 +273,7 @@ module.exports = function(webpackEnv) {
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
+        '../../../theme.config': path.join(__dirname, 'semantic-theme/theme.config'),
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -295,6 +297,17 @@ module.exports = function(webpackEnv) {
     module: {
       strictExportPresence: true,
       rules: [
+        // this handles .less translation
+        {
+          test: /\.less$/,
+          use: [
+            {
+              loader: MiniCssExtractPlugin.loader
+            },
+            'css-loader',
+            'less-loader'
+          ]
+        },
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
 
@@ -472,9 +485,32 @@ module.exports = function(webpackEnv) {
             // Make sure to add the new loader(s) before the "file" loader.
           ],
         },
+        // this rule handles images
+        {
+          test: /\.jpe?g$|\.gif$|\.ico$|\.png$|\.svg$/,
+          use: 'file-loader?name=[name].[ext]?[hash]'
+        },
+
+        // the following 3 rules handle font extraction
+        {
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+        },
+        
+        {
+          test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          loader: 'file-loader'
+        },
+        {
+        test: /\.otf(\?.*)?$/,
+        use: 'file-loader?name=/fonts/[name].  [ext]&mimetype=application/font-otf'
+        }
       ],
     },
     plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

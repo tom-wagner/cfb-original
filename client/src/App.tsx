@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import 'semantic-ui-css/semantic.min.css'
 import axios, { AxiosResponse } from 'axios';
 import { Table } from 'semantic-ui-react'
 import { BASE_API_URL } from './constants/constants';
 import _ from 'lodash';
+import { Button } from 'semantic-ui-react';
 // TODO: Figure out how to use path properly
 // import path from 'path';
 
@@ -26,7 +28,7 @@ const App: React.FC = () => {
   let pageContent;
 
   if (pageStatus === "Loading...") {
-    pageContent = <p>Page loading...</p>
+    pageContent = <Button>Click me</Button>
   }
 
   if (pageStatus === "error") {
