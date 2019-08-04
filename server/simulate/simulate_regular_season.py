@@ -23,8 +23,11 @@ def add_ratings_and_simulate(game, team_ratings):
 def simulate_game(game):
     home_team, away_team = game['home_team'], game['away_team']
     winner, loser = (home_team, away_team) if game['home_team_win_pct'] > rand_float() else (away_team, home_team)
-    are_both_teams_division_one = TEAMS.get(home_team) and TEAMS.get(away_team)
+    are_both_teams_division_one = (home_team in TEAMS) and (away_team in TEAMS)
     is_conf_game = are_both_teams_division_one and TEAMS[home_team]['conference'] == TEAMS[away_team]['conference']
+    if game['home_team'] == 'Alabama' or game['away_team'] == 'Alabama':
+        print(game['home_team'], game['away_team'], is_conf_game)
+
     return dict(winner=winner, loser=loser, is_conf_game=is_conf_game)
 
 
@@ -68,6 +71,13 @@ def add_proj_margin_to_game(game, team_ratings):
 
 def get_empty_wins_dict():
     return {x: 0 for x in range(14)}
+
+
+def add_teams_with_zero_wins(wins_dict: Counter) -> Counter:
+    for team in TEAMS:
+        if team not in wins_dict:
+            wins_dict[team] = 0
+    return wins_dict
 
 
 def break_two_way_tie(team_one: str, team_two: str, simulated_season: List):
@@ -122,7 +132,8 @@ class SimulateRegularSeason:
         augmented_schedule = [add_ratings_to_game(game, TEAM_RATINGS) for game in trimmed_schedule]
         return augmented_schedule
 
-    def determine_standings_and_update_simulation_results(self, conf_wins, simulated_season):
+    @staticmethod
+    def determine_standings_and_update_simulation_results(conf_wins, simulated_season):
         for conf, conf_detail in CONFERENCES.items():
             divisions = conf_detail.get('divisions')
             if divisions:
@@ -138,17 +149,20 @@ class SimulateRegularSeason:
             for game in simulated_season:
                 conf_games.append(game['winner']) if game['is_conf_game'] else nc_games.append(game['winner'])
             conf_wins, nc_wins = Counter(conf_games), Counter(nc_games)
+            # conf_wins_incl_zero, nc_wins_incl_zero = (add_teams_with_zero_wins(x) for x in (conf_wins, nc_wins))
             total_wins = dict(conf_wins+nc_wins)
 
             for season_segment, results in (
-                    ('conference_results', conf_wins), ('non_conference_results', nc_wins), ('total_wins', total_wins)):
+                    ('conference_results', conf_wins),
+                    ('non_conference_results', nc_wins),
+                    ('total_wins', total_wins),
+            ):
                 for k, v in results.items():
-                    if self.simulation_results.get(k):
+                    if k in self.simulation_results:
                         self.simulation_results[k][season_segment][v] += 1
             # self.determine_standings_and_update_simulation_results(conf_wins, simulated_season)
 
         return self.simulation_results
-
 
 
 # s = SimulateRegularSeason(year=2019, conference='B1G')

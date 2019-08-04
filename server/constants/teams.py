@@ -1,3 +1,5 @@
+# TODO: BUG!! Where is South Carolina and Mississippi State!!
+
 TEAMS = {'Air Force': {'school': 'Air Force', 'mascot': 'Falcons', 'abbreviation': 'AFA', 'conference': 'Mountain West',
                        'division': 'Mountain', 'color': '#004a7b', 'alt_color': '#ffffff',
                        'logos': ['http://a.espncdn.com/i/teamlogos/ncaa/500/2005.png',
