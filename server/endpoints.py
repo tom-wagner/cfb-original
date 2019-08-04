@@ -4,6 +4,7 @@ from flask_cors import CORS
 from server.constants.conferences import CONFERENCES
 from server.external_apis.cf_data import CFData
 from server.ratings.inputs.data.team_ratings import TEAM_RATINGS
+from server.simulate.simulate_regular_season import SimulateRegularSeason
 
 app = Flask(__name__)
 CORS(app)
@@ -31,8 +32,8 @@ def teams():
 @app.route("/schedule", methods=['GET'])
 def schedule():
     try:
-        res = CFData().get("games", year=request.args.get('year'))
-        return json.jsonify(res.json())
+        res = CFData().get_schedule(year=request.args.get('year'))
+        return json.jsonify(res)
     except Exception as e:
         return dict(error="Error fetching schedule", detail=e)
 
@@ -40,6 +41,14 @@ def schedule():
 @app.route("/conferences", methods=['GET'])
 def conferences():
     return json.jsonify(CONFERENCES)
+
+
+@app.route("/simulate", methods=["GET"])
+def simulate():
+    year, conference = (request.args.get(arg) for arg in ('year', 'conference'))
+    s = SimulateRegularSeason(year=year, conference=conference)
+    s.run(10000)
+    return json.jsonify(s.simulation_results)
 
 
 app.run(debug=True)
